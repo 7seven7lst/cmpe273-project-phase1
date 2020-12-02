@@ -7,38 +7,24 @@ class Node(object):
         self.name = name
 
 class ConsistentHashRing(object):
-    """Implement a consistent hashing ring."""
-
-    def __init__(self, nodes, replicas):
-        """Create a new ConsistentHashRing.
-        :param replicas: number of replicas.
-        """
-        self.replicas = replicas
+    def __init__(self, nodes):
         self.keys = []
         self.nodes = nodes
 
-    def hash(self, key,):
-        """Given a string key, return a hash value."""
+    def hash(self, key):
         key = str(key)
         key = key.encode('utf-8')
         return int(hashlib.md5(key).hexdigest(), 16)
 
     def get_node(self, key):
-        """Return a node, given a key.
-        The node replica with a hash value nearest
-        but not less than that of the given
-        name is returned.   If the hash of the
-        given name is greater than the greatest
-        hash, returns the lowest hashed node.
-        """
-        hash_ = self.hash(key)
-        start = bisect.bisect(self.keys, hash_)
+        hashed_key = self.hash(key)
+        start = bisect.bisect(self.keys, hashed_key)
         if start == len(self.nodes):
             start = 0
         return self.nodes[start]
 
 
-    def setKeys(self):
+    def set_keys(self):
         for i in range(len(self.nodes)):
-            curKey = self.hash(self.nodes[i].name)
-            bisect.insort(self.keys, curKey)
+            current_key = self.hash(self.nodes[i].name)
+            bisect.insort(self.keys, current_key)
