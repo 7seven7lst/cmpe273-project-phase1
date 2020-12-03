@@ -37,7 +37,6 @@ def generate_data_consistent_hashing(servers):
     for key, value in producers.items():
         nodes.append(consistent_hashing.Node(value, key))
     client_ring = consistent_hashing.ConsistentHashRing(nodes)
-    client_ring.set_keys()
 
     for num in range(10):
         data = { 'key': f'key-{num}', 'value': f'value-{num}' }
